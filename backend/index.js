@@ -32,43 +32,43 @@ mongoose.connect('mongodb+srv://BigDeal:CG1lW2FZSG2BCH3D@cluster0.3kbqs43.mongod
   }).catch((err)=>{
     console.log(err,'errr')})
 
-const userSchema= new mongoose.Schema({
-    firstname:{
-       type: String,
-       allowNull:true
-    },
-    lastname:{
-        type: String,
-        allowNull:true
-     },
-    Age:{
-        type: String,
-        allowNull:true
-     },
-    email:{
-        type: String,
-        allowNull:true
-     },
-    password:{
-        type: String,
-        allowNull:true
-     },
-    image:{
-        type: String,
-        allowNull:true
-     },
-     btncolor:{
-        type: String,
-        allowNull:true
-     },
-     txtColor:{
-        type: String,
-        allowNull:true
-     },
-
-},{
-    timestamps:true
-})
+    const userSchema= new mongoose.Schema({
+        firstname:{
+           type: String,
+           allowNull:true
+        },
+        lastname:{
+            type: String,
+            allowNull:true
+         },
+        idNumber:{
+            type: Number,
+            allowNull:true
+         },
+        email:{
+            type: String,
+            allowNull:true
+         },
+        password:{
+            type: String,
+            allowNull:true
+         },
+        image:{
+            type: String,
+            allowNull:true
+         },
+         Qualification:{
+            type: String,
+            allowNull:true
+         },
+         phNumber:{
+            type: Number,
+            allowNull:true
+         },
+    
+    },{
+        timestamps:true
+    })
 
 const User=mongoose.model('Users',userSchema)
 
@@ -89,7 +89,7 @@ app.post('/registers', upload.array('image'),async(req,res)=>{
          console.log(req.body)
         // console.log('runiing here',req.files.filename)
 
-     var users= new User({
+        var users= new User({
             email:req.body.username,
             password:req.body.password,
             firstname:req.body.fname,
@@ -98,8 +98,7 @@ app.post('/registers', upload.array('image'),async(req,res)=>{
             Qualification:req.body.txtColor,
             idNumber:req.body.age,
             image:req.files[0].filename,
-           
-        });
+       });
         users.save();
         res.redirect('/login')
        
@@ -140,22 +139,24 @@ const checkAuth = (req, res, next)=> {
   }
   app.use('/uploads', express.static('../uploads'));
 
-app.get('/home',checkAuth,(req,res,next)=>{
+app.get('/test',checkAuth,(req,res,next)=>{
     console.log('this is home',req.user);
     if(req.user){
-        console.log(req.user.image)
-        res.render("secrets",{Fname:req.user.firstname,
-            Lname:req.user.lastname,
-            Email:req.user.email,
-            Age:req.user.Age,
-            Image:req.user.image,
-            Color:req.user.btncolor,
-            txtColor:req.user.txtColor,
-        });
-        console.log(req.user.btncolorcolor)
+        console.log(req.user)
+        // res.render("secrets",{Fname:req.user.firstname,
+        //     Lname:req.user.lastname,
+        //     Email:req.user.email,
+        //     Age:req.user.Age,
+        //     Image:req.user.image,
+        //     Color:req.user.btncolor,
+        //     txtColor:req.user.txtColor,
+        // });
+        // console.log(req.user.btncolorcolor)
+        res.send(req.user)
     }else{
         res.redirect('/login')
     }
+    res.send("Hello this is acoount")
 });
 app.get('/logout',(req,res)=>{
     res.clearCookie('__token');
@@ -176,7 +177,7 @@ app.post('/login',async(req,res)=>{
                 console.log(`Hence the generated token:${token}`);
                 res.cookie('__token',token);
                 // console.log(res);
-                res.redirect('/home');
+                res.redirect('/test');
 
             }
         }
@@ -194,9 +195,7 @@ app.get("/getall",async(req,res)=>{
 
 })
 
-app.get("/test",async(req,res)=>{
-    console.log('Connected')
-})
+
 
 
 
