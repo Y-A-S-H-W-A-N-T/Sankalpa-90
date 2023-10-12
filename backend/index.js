@@ -184,7 +184,6 @@ app.post('/login',async(req,res)=>{
             console.log(err);
             return res.send(err);
         }
-
 });
 
 app.get("/getall",async(req,res)=>{
@@ -193,6 +192,10 @@ app.get("/getall",async(req,res)=>{
     res.render("account",{result:result})
      
 
+})
+
+app.get("/test",async(req,res)=>{
+    console.log('Connected')
 })
 
 
