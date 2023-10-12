@@ -2,7 +2,7 @@
 const express=require('express');
 const bodyParser=require('body-parser');
 const mongoose=require('mongoose');
-
+const jwt = require('jsonwebtoken');
 
 const multer=require('multer');
 const ejs=require('ejs');
@@ -30,8 +30,7 @@ app.get('/login',(req,res)=>{
 mongoose.connect('mongodb+srv://BigDeal:CG1lW2FZSG2BCH3D@cluster0.3kbqs43.mongodb.net/?retryWrites=true&w=majority',{useNewUrlParser:true}).then((res)=>{
     console.log('mongoose db connected');
   }).catch((err)=>{
-    console.log(err,'errr')
-  })
+    console.log(err,'errr')})
 
 const userSchema= new mongoose.Schema({
     firstname:{
@@ -42,8 +41,8 @@ const userSchema= new mongoose.Schema({
         type: String,
         allowNull:true
      },
-    idNumber:{
-        type: Number,
+    Age:{
+        type: String,
         allowNull:true
      },
     email:{
@@ -58,12 +57,12 @@ const userSchema= new mongoose.Schema({
         type: String,
         allowNull:true
      },
-     Qualification:{
+     btncolor:{
         type: String,
         allowNull:true
      },
-     phNumber:{
-        type: Number,
+     txtColor:{
+        type: String,
         allowNull:true
      },
 
@@ -90,7 +89,7 @@ app.post('/registers', upload.array('image'),async(req,res)=>{
          console.log(req.body)
         // console.log('runiing here',req.files.filename)
 
-      var users= new User({
+     var users= new User({
             email:req.body.username,
             password:req.body.password,
             firstname:req.body.fname,
@@ -99,8 +98,8 @@ app.post('/registers', upload.array('image'),async(req,res)=>{
             Qualification:req.body.txtColor,
             idNumber:req.body.age,
             image:req.files[0].filename,
-           
-        });
+           
+        });
         users.save();
         res.redirect('/login')
        
